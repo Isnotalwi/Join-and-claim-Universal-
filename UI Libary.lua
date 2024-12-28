@@ -1016,9 +1016,16 @@ function startRGBEffect(instance, property)
         instance[property] = Color3.fromHSV(hue / 360, 1, 1) -- Convert hue to RGB
     end)
 end
-
-startRGBEffect(MainFrame, "BackgroundColor3")
 startRGBEffect(button.TextLabel, "TextColor3")
+
+			startRGBEffect(MainFrame, "BackgroundColor3")
+			
+if MainFrame then
+    startRGBEffect(MainFrame, "BackgroundColor3")
+end
+if button and button.TextLabel then
+    startRGBEffect(button.TextLabel, "TextColor3")
+			end
 
 
             page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
