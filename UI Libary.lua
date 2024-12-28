@@ -311,7 +311,7 @@ function lib:CreateWindow(title)
                 Font = window.Font,
                 TextXAlignment = Enum.TextXAlignment.Center,
                 Text = tabTitle,
-                TextColor3 = Color3.fromRGB(222, 222, 222),
+                TextColor3 = Color3.fromRGB(255, 255, 0),
                 TextSize = 14,
             })
         })
@@ -1008,6 +1008,18 @@ end)
                     page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
                 end
             end)
+
+function startRGBEffect(instance, property)
+    local hue = 0
+    game:GetService("RunService").RenderStepped:Connect(function()
+        hue = (hue + 1) % 360
+        instance[property] = Color3.fromHSV(hue / 360, 1, 1) -- Convert hue to RGB
+    end)
+end
+
+startRGBEffect(MainFrame, "BackgroundColor3")
+startRGBEffect(button.TextLabel, "TextColor3")
+
 
             page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
             return components;
