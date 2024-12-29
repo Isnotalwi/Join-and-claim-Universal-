@@ -1009,23 +1009,34 @@ end)
                 end
             end)
 
-function startRGBEffect(instance, property)
+function startRedBlueEffect(instance, property)
     local hue = 0
     game:GetService("RunService").RenderStepped:Connect(function()
         hue = (hue + 1) % 360
-        instance[property] = Color3.fromHSV(hue / 360, 1, 1) -- Convert hue to RGB
+        if hue < 180 then
+            instance[property] = Color3.fromHSV(0, 1, 1)
+        else
+            instance[property] = Color3.fromHSV(0.666, 1, 1)
+        end
     end)
 end
-startRGBEffect(button.TextLabel, "TextColor3")
 
-			startRGBEffect(MainFrame, "BackgroundColor3")
-			
-if MainFrame then
-    startRGBEffect(MainFrame, "BackgroundColor3")
+local function applyRedBlueToAll(container)
+    for _, child in pairs(container:GetDescendants()) do
+        if child:IsA("GuiObject") then
+            if child:FindFirstChild("TextLabel") then
+                startRedBlueEffect(child.TextLabel, "TextColor3")
+            elseif child:IsA("Frame") or child:IsA("ImageLabel") then
+                startRedBlueEffect(child, "BackgroundColor3")
+            end
+        end
+    end
 end
-if button and button.TextLabel then
-    startRGBEffect(button.TextLabel, "TextColor3")
-			end
+
+if MainFrame then
+    applyRedBlueToAll(MainFrame)
+end
+
 
 
             page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
