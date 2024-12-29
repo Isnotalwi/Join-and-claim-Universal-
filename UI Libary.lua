@@ -1015,7 +1015,7 @@ function startRedBlueEffect(instance, property)
         hue = (hue + 1) % 360
         local color
         if hue <= 180 then
-            color = Color3.fromHSV(hue / 360, 1, 1)
+            color = Color3.fromHSV(hue / 360, 1, 1) -- Smooth transition red to blue
         else
             color = Color3.fromHSV((hue - 180) / 360, 1, 1)
         end
@@ -1023,26 +1023,17 @@ function startRedBlueEffect(instance, property)
     end)
 end
 
-local function applyRedBlueEffect(container)
+local function applyRedBlueEffectToText(container)
     for _, child in pairs(container:GetDescendants()) do
         if child:IsA("TextLabel") or child:IsA("TextButton") or child:IsA("TextBox") then
-            startRedBlueEffect(child, "TextColor3")
-        elseif child:IsA("Frame") and child:FindFirstChildOfClass("Frame") then
-            startRedBlueEffect(child, "BackgroundColor3")
+            startRedBlueEffect(child, "TextColor3") -- Apply to text elements only
         end
     end
 end
 
 if MainFrame then
-    applyRedBlueEffect(MainFrame)
+    applyRedBlueEffectToText(MainFrame)
 end
-
-
-if MainFrame then
-    applyRedBlueToAllText(MainFrame)
-end
-
-
 
 
             page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
