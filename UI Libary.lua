@@ -493,54 +493,552 @@ function lib:CreateWindow(title)
             end
 
             function components:AddToggle(buttonTitle, tooltip, default, callback)
-    local t1 = {}
-    tooltip = tooltip or nil
-    t1.State = default or false
-    callback = callback or function() end
+                local t1 = {}
+                tooltip = tooltip or nil
+                t1.State = default or false;
+                callback = callback or function() end
+                local b1 = Create("TextButton", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(1, 0, 0, 30),
+                    Parent = container,
+                    Text = "",
+                    AutoButtonColor = false,
+                    LayoutOrder = order
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color = Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    }),
+                    Create("TextLabel", {
+                        BackgroundTransparency = 1,
+                        Position = UDim2.new(0, 10, 0.5, -8),
+                        Size = UDim2.new(1, -10, 0, 14),
+                        Font = window.Font,
+                        Text = buttonTitle,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        TextSize = 14,
+                        TextXAlignment = Enum.TextXAlignment.Left
+                    })
+                })
+                local toggle = Create("Frame", {
+                    BackgroundColor3 = Color3.fromRGB(20, 21, 25),
+                    Size = UDim2.new(0, 24, 0, 24),
+                    Position = UDim2.new(1, -30, 0.5, -12),
+                    Parent = b1
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color = t1.State and window.AccentColor or Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    }),
+                    Create("ImageLabel", {
+                        BackgroundTransparency = 1,
+                        Size = UDim2.new(0, 20, 0, 20),
+                        Position = UDim2.new(0.5, -10, 0.5, -10),
+                        Image = "http://www.roblox.com/asset/?id=6031094667",
+                        ImageColor3 = window.AccentColor,
+                        ImageTransparency = t1.State and 0 or 1
+                    })
+                })
 
-    local b1 = Create("TextButton", {
-        BackgroundColor3 = Color3.fromRGB(13, 14, 16),
-        Size = UDim2.new(1, 0, 0, 30),
-        Parent = container,
-        Text = "",
-        AutoButtonColor = false,
-        LayoutOrder = order
-    }, {
-        Create("UIStroke", {
-            ApplyStrokeMode = 1,
-            Color = Color3.fromRGB(24, 25, 30)
-        }),
-        Create("UICorner", {
-            CornerRadius = UDim.new(0, 4)
-        }),
-        Create("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.new(0, 10, 0.5, -8),
-            Size = UDim2.new(1, -10, 0, 14),
-            Font = window.Font,
-            Text = buttonTitle,
-            TextColor3 = Color3.new(1, 1, 1),
-            TextSize = 14,
-            TextXAlignment = Enum.TextXAlignment.Left
-        })
-    })
+                b1.MouseButton1Click:Connect(function()
+                    t1.State = not t1.State;
+                    callback(t1.State)
+                    TS:Create(toggle.ImageLabel, TweenInfo.new(t1.State and 0.3 or 0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = t1.State and UDim2.new(0, 20, 0, 20) or UDim2.new(0, 0, 0, 0), Position = t1.State and UDim2.new(0.5, -10, 0.5, -10) or UDim2.new(0.5, 0, 0.5, 0)}):Play()
+                    tween(toggle.ImageLabel, t1.State and 0.3 or 0.8, {ImageTransparency = t1.State and 0 or 1})
+                    tween(toggle.UIStroke, 0.3, {Color = t1.State and window.AccentColor or Color3.fromRGB(24, 25, 30)})
+                end)
+                b1.MouseEnter:Connect(function()
+                    showTooltip(tooltip)
+                end)
+                b1.MouseLeave:Connect(function()
+                    hideTooltip()
+                end)
+                container.Size = UDim2.new(1, 0, 0, sectionSize(bg));
+                bg.Size = UDim2.new(1, 0, 0, sectionSize(bg) + 30);
+                order = order + 1
+                function t1:SetState(state)
+                    t1.State = state
+                    callback(t1.State)
+                    TS:Create(toggle.ImageLabel, TweenInfo.new(t1.State and 0.3 or 0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = t1.State and UDim2.new(0, 20, 0, 20) or UDim2.new(0, 0, 0, 0), Position = t1.State and UDim2.new(0.5, -10, 0.5, -10) or UDim2.new(0.5, 0, 0.5, 0)}):Play()
+                    tween(toggle.ImageLabel, t1.State and 0.3 or 0.8, {ImageTransparency = t1.State and 0 or 1})
+                    tween(toggle.UIStroke, 0.3, {Color = t1.State and window.AccentColor or Color3.fromRGB(24, 25, 30)})
+                end
+                return t1;
+            end
 
-    local toggle = Create("Frame", {
-        BackgroundColor3 = Color3.fromRGB(20, 21, 25),
-        Size = UDim2.new(0, 24, 0, 24),
-        Position = UDim2.new(1, -30, 0.5, -12),
-        Parent = b1
-    }, {
-        Create("UIStroke", {
-            ApplyStrokeMode = 1,
-            Color = t1.State and window.AccentColor or Color3.fromRGB(24, 25, 30)
-        }),
-        Create("UICorner", {
-            CornerRadius = UDim.new(0, 4)
-        }),
-        Create("TextLabel", {
-            BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 1, 0),
-            Font = window.Font,
-            Text = t1.State and "√" or "",
-            TextColor3 = Color3
+            function components:AddTextBox(boxTitle, tooltip, placeholder, default, callback)
+                tooltip = tooltip or nil
+                placeholder = placeholder or ""
+                default = default or ""
+                callback = callback or function() end
+                local b1 = Create("Frame", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(1, 0, 0, 30),
+                    Parent = container,
+                    LayoutOrder = order
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color = Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    }),
+                    Create("TextLabel", {
+                        BackgroundTransparency = 1,
+                        Position = UDim2.new(0, 10, 0.5, -8),
+                        Size = UDim2.new(1, -10, 0, 14),
+                        Font = window.Font,
+                        Text = boxTitle,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        TextSize = 14,
+                        TextXAlignment = Enum.TextXAlignment.Left
+                    })
+                })
+                local textbox = Create("TextBox", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(0, 150, 0, 24),
+                    Position = UDim2.new(1, -155, 0.5, -12),
+                    Parent = b1,
+                    Font = window.Font,
+                    Text = default,
+                    PlaceholderText = placeholder,
+                    TextColor3 = Color3.new(1, 1, 1),
+                    TextSize = 14,
+                    TextWrapped = true
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color =Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    })
+                })
+
+                textbox.Focused:Connect(function()
+                    tween(textbox.UIStroke, 0.3, {Color = window.AccentColor})
+                end)
+
+                textbox.FocusLost:Connect(function()
+                    tween(textbox.UIStroke, 0.3, {Color = Color3.fromRGB(24, 25, 30)})
+                    callback(textbox.Text)
+                end)
+
+                b1.MouseEnter:Connect(function()
+                    showTooltip(tooltip)
+                end)
+                b1.MouseLeave:Connect(function()
+                    hideTooltip()
+                end)
+                container.Size = UDim2.new(1, 0, 0, sectionSize(bg));
+                bg.Size = UDim2.new(1, 0, 0, sectionSize(bg) + 30);
+                order = order + 1;
+            end
+
+            function components:AddDropdown(dropdownText, tooltip, items, default, callback)
+                local ee = {}
+                tooltip = tooltip or nil
+                items = items or {}
+                default = default or ""
+                callback = callback or function() end
+                local dropdownOpen = false
+                local b1 = Create("Frame", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(1, 0, 0, 30),
+                    Parent = container,
+                    LayoutOrder = order,
+                    ClipsDescendants = true
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color = Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    }),
+                    Create("TextLabel", {
+                        BackgroundTransparency = 1,
+                        Position = UDim2.new(0, 10, 0, 8),
+                        Size = UDim2.new(1, -10, 0, 14),
+                        Font = window.Font,
+                        Text = dropdownText,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        TextSize = 14,
+                        TextXAlignment = Enum.TextXAlignment.Left
+                    })
+                })
+                local textbox = Create("TextBox", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(0, 150, 0, 24),
+                    Position = UDim2.new(1, -185, 0, 3),
+                    Parent = b1,
+                    Font = window.Font,
+                    Text = default,
+                    PlaceholderText = "...",
+                    TextColor3 = Color3.new(1, 1, 1),
+                    TextSize = 14,
+                    TextWrapped = true,
+                    TextEditable = false
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color =Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    })
+                })
+
+                local dropdownTog = Create("ImageButton", {
+                    BackgroundTransparency = 1,
+                    Image = "",
+                    Position = UDim2.new(1, -30, 0, 3),
+                    Size = UDim2.new(0, 24, 0, 24),
+                    Parent = b1
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color =Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    })
+                })
+            
+                local dropdownIcon = Create("ImageLabel", {
+                    BackgroundTransparency = 1,
+                    Image = "http://www.roblox.com/asset/?id=6031094670",
+                    Size = UDim2.new(1, 0, 1, 0),
+                    Rotation = 270,
+                    Parent = dropdownTog
+                })
+
+                local dropdownContainer = Create("ScrollingFrame", {
+                    BackgroundTransparency = 1,
+                    BorderSizePixel = 0,
+                    Size = UDim2.new(1, -4, 1, -32),
+                    CanvasSize = UDim2.new(0, 0, 0, 0),
+                    ScrollBarImageColor3 = Color3.fromRGB(42, 43, 53),
+                    BottomImage = "",
+                    TopImage = "",
+                    ScrollBarThickness = 6,
+                    VerticalScrollBarInset = 1,
+                    Parent = b1,
+                    Position = UDim2.new(0, 2, 0, 32)
+                }, {
+                    Create("UIListLayout", {
+                        Padding = UDim.new(0, 5)
+                    }),
+                    Create("UIPadding", {
+                        PaddingLeft = UDim.new(0, 5),
+                        PaddingRight = UDim.new(0, 5),
+                        PaddingTop = UDim.new(0, 5),
+                        PaddingBottom = UDim.new(0, 5)
+                    })
+                })
+
+                dropdownTog.MouseButton1Click:Connect(function()
+                    dropdownOpen = not dropdownOpen;
+                    tween(dropdownIcon, 0.5, {Rotation = dropdownOpen and 90 or 270})
+                    tween(b1, 0.5, {Size = dropdownOpen and UDim2.new(1, 0, 0, 120) or UDim2.new(1, 0, 0, 30)})
+                end)
+
+                b1.Changed:Connect(function(it)
+                    if it == "Size" then
+                        container.Size = UDim2.new(1, 0, 0, sectionSize(bg));
+                        bg.Size = UDim2.new(1, 0, 0, sectionSize(bg) + 30);
+                    end
+                end)
+
+                function ee:Update(newlist)
+                    for i, v in pairs(dropdownContainer:GetChildren()) do
+                        if v:IsA("TextButton") then
+                            v:Destroy()
+                        end
+                    end
+                    items = newlist
+                    textbox.Text = ""
+                    for i, v in pairs(items) do
+                        local btndebounce = false;
+                        local ee = Create("TextButton", {
+                            BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                            Size = UDim2.new(1, 0, 0, 30),
+                            Parent = dropdownContainer,
+                            Text = "",
+                            AutoButtonColor = false,
+                            LayoutOrder = order
+                        }, {
+                            Create("UIStroke", {
+                                ApplyStrokeMode = 1,
+                                Color = Color3.fromRGB(24, 25, 30)
+                            }),
+                            Create("UICorner", {
+                                CornerRadius = UDim.new(0, 4)
+                            }),
+                            Create("TextLabel", {
+                                BackgroundTransparency = 1,
+                                Position = UDim2.new(0, 10, 0.5, -8),
+                                Size = UDim2.new(1, -10, 0, 14),
+                                Font = window.Font,
+                                Text = i.." - "..v,
+                                TextColor3 = Color3.new(1, 1, 1),
+                                TextSize = 14,
+                                TextXAlignment = Enum.TextXAlignment.Left
+                            })
+                        })
+    
+                        dropdownContainer.CanvasSize = UDim2.new(0, 0, 0, dropdownContainer.CanvasSize.Y.Offset + 36)
+    
+                        ee.MouseButton1Click:Connect(function()
+                            textbox.Text = v
+                            callback(textbox.Text)
+                            if not btndebounce then
+                                btndebounce = true
+                                TS:Create(ee:FindFirstChildOfClass("UIStroke"), TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, true), {Color = window.AccentColor}):Play()
+                                wait(0.4)
+                                btndebounce = false
+                            end
+                        end)
+    
+                        b1.MouseEnter:Connect(function()
+                            showTooltip(tooltip)
+                        end)
+                        b1.MouseLeave:Connect(function()
+                            hideTooltip()
+                        end)
+                    end
+                end
+
+                for i, v in pairs(items) do
+                    local btndebounce = false;
+                    local ee = Create("TextButton", {
+                        BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                        Size = UDim2.new(1, 0, 0, 30),
+                        Parent = dropdownContainer,
+                        Text = "",
+                        AutoButtonColor = false,
+                        LayoutOrder = order
+                    }, {
+                        Create("UIStroke", {
+                            ApplyStrokeMode = 1,
+                            Color = Color3.fromRGB(24, 25, 30)
+                        }),
+                        Create("UICorner", {
+                            CornerRadius = UDim.new(0, 4)
+                        }),
+                        Create("TextLabel", {
+                            BackgroundTransparency = 1,
+                            Position = UDim2.new(0, 10, 0.5, -8),
+                            Size = UDim2.new(1, -10, 0, 14),
+                            Font = window.Font,
+                            Text = i.." - "..v,
+                            TextColor3 = Color3.new(1, 1, 1),
+                            TextSize = 14,
+                            TextXAlignment = Enum.TextXAlignment.Left
+                        })
+                    })
+
+                    dropdownContainer.CanvasSize = UDim2.new(0, 0, 0, dropdownContainer.CanvasSize.Y.Offset + 36)
+
+                    ee.MouseButton1Click:Connect(function()
+                        textbox.Text = v
+                        callback(textbox.Text)
+                        if not btndebounce then
+                            btndebounce = true
+                            TS:Create(ee:FindFirstChildOfClass("UIStroke"), TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, true), {Color = window.AccentColor}):Play()
+                            wait(0.4)
+                            btndebounce = false
+                        end
+                    end)
+
+                    b1.MouseEnter:Connect(function()
+                        showTooltip(tooltip)
+                    end)
+                    b1.MouseLeave:Connect(function()
+                        hideTooltip()
+                    end)
+                end
+
+
+                b1.MouseEnter:Connect(function()
+                    showTooltip(tooltip)
+                end)
+                b1.MouseLeave:Connect(function()
+                    hideTooltip()
+                end)
+                container.Size = UDim2.new(1, 0, 0, sectionSize(bg));
+                bg.Size = UDim2.new(1, 0, 0, sectionSize(bg) + 30);
+                order = order + 1;
+                return ee;
+            end
+
+            function components:AddSlider(boxTitle, tooltip, minValue, maxValue, default, precise, callback)
+                local t1 = {}
+                precise = precise or false
+                tooltip = tooltip or nil
+                minValue = minValue or 0
+                maxValue = maxValue or 1
+                default = default or 0
+                callback = callback or function() end
+                local valuee = 0;
+                local b1 = Create("Frame", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(1, 0, 0, 30),
+                    Parent = container,
+                    LayoutOrder = order
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color = Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(0, 4)
+                    }),
+                    Create("TextLabel", {
+                        BackgroundTransparency = 1,
+                        Position = UDim2.new(0, 10, 0.5, -8),
+                        Size = UDim2.new(1, -10, 0, 14),
+                        Font = window.Font,
+                        Text = boxTitle,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        TextSize = 14,
+                        TextXAlignment = Enum.TextXAlignment.Left
+                    })
+                })
+
+                local sliderBg = Create("Frame", {
+                    BackgroundColor3 = Color3.fromRGB(13, 14, 16),
+                    Size = UDim2.new(0, 150, 0, 12),
+                    Position = UDim2.new(1, -155, 0.5, -6),
+                    Parent = b1,
+                    ClipsDescendants = true
+                }, {
+                    Create("UIStroke", {
+                        ApplyStrokeMode = 1,
+                        Color =Color3.fromRGB(24, 25, 30)
+                    }),
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(1, 0)
+                    })
+                })
+
+                local sliderVal = Create("Frame", {
+                    BackgroundColor3 = window.AccentColor,
+                    Size = UDim2.new(default / maxValue, 0, 1, 0),
+                    Parent = sliderBg
+                }, {
+                    Create("UICorner", {
+                        CornerRadius = UDim.new(1, 0)
+                    })
+                })
+
+                local draggingg = false;
+                local function move(input)
+                    local pos = UDim2.new(math.clamp((input.Position.X - sliderBg.AbsolutePosition.X) / sliderBg.AbsoluteSize.X, 0, 1), 0, 1, 0)
+                    tween(sliderVal, 0.3, {Size = pos})
+                    local SliderPrecise = ((pos.X.Scale * maxValue) / maxValue) * (maxValue - minValue) + minValue
+                    local SliderNotPrecise = math.floor(((pos.X.Scale * maxValue) / maxValue) * (maxValue - minValue) + minValue)
+                    local Value = precise and SliderNotPrecise or SliderPrecise
+                    Value = tonumber(string.format("%.2f", Value))
+                    valuee = Value
+                    showTooltip(string.format("[%.2f/%.2f]", valuee, maxValue))
+                    callback(valuee)
+                end
+
+                function t1:SetValue(Value)
+                    tween(sliderVal, 0.3, {Size = UDim2.new(Value / maxValue, 0, 1, 0)})
+                    valuee = Value
+                    callback(valuee)
+                end
+
+                function t1:GetValue()
+                    return valuee;
+                end
+
+    sliderBg.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        move(input)
+        draggingg = true
+    end
+end)
+
+sliderBg.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingg = false
+        hideTooltip()
+    end
+end)
+
+UIS.InputChanged:Connect(function(input)
+    if draggingg and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        move(input)
+    end
+end)
+
+
+                sliderBg.MouseEnter:Connect(function()
+                    showTooltip(string.format("[%f/%f]", valuee, maxValue))
+                end)
+
+                sliderBg.MouseLeave:Connect(function()
+                    hideTooltip()
+                end)
+
+                b1.MouseEnter:Connect(function()
+                    showTooltip(tooltip)
+                end)
+                b1.MouseLeave:Connect(function()
+                    hideTooltip()
+                end)
+                container.Size = UDim2.new(1, 0, 0, sectionSize(bg));
+                bg.Size = UDim2.new(1, 0, 0, sectionSize(bg) + 30);
+                order = order + 1;
+                return t1;
+            end
+
+            bg.Changed:Connect(function(thing)
+                if(thing == "Size") then
+                    page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
+                end
+            end)
+
+function applyRGBTextEffect(label)
+    local RS = game:GetService("RunService")
+    local hue = 0
+    RS.RenderStepped:Connect(function()
+        hue = (hue + 1) % 360
+        local color = Color3.fromHSV(hue / 360, 1, 1)
+        label.TextColor3 = color
+    end)
+end
+
+
+function Create(instance, properties, children)
+    local obj = Instance.new(instance)
+    for i, v in pairs(properties or {}) do
+        obj[i] = v
+    end
+    for _, child in pairs(children or {}) do
+        child.Parent = obj
+    end
+    if instance == "TextLabel" or instance == "TextButton" or instance == "TextBox" then
+        applyRGBTextEffect(obj)
+    end
+    return obj
+end
+			
+            page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
+            return components;
+        end
+        return comp1;
+    end
+    return window;
+end;
+return lib;
