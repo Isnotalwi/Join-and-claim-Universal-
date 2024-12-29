@@ -1021,21 +1021,18 @@ function startRedBlueEffect(instance, property)
     end)
 end
 
-local function applyRedBlueToAll(container)
+local function applyRedBlueToText(container)
     for _, child in pairs(container:GetDescendants()) do
-        if child:IsA("GuiObject") then
-            if child:FindFirstChild("TextLabel") then
-                startRedBlueEffect(child.TextLabel, "TextColor3")
-            elseif child:IsA("Frame") or child:IsA("ImageLabel") then
-                startRedBlueEffect(child, "BackgroundColor3")
-            end
+        if child:IsA("TextLabel") or child:IsA("TextButton") then
+            startRedBlueEffect(child, "TextColor3")
         end
     end
 end
 
 if MainFrame then
-    applyRedBlueToAll(MainFrame)
+    applyRedBlueToText(MainFrame)
 end
+
 
 
 
