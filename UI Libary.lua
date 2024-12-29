@@ -1013,24 +1013,33 @@ function startRedBlueEffect(instance, property)
     local hue = 0
     game:GetService("RunService").RenderStepped:Connect(function()
         hue = (hue + 1) % 360
-        if hue < 180 then
-            instance[property] = Color3.fromHSV(0, 1, 1)
+        local color
+        if hue <= 180 then
+            color = Color3.fromHSV(hue / 360, 1, 1)
         else
-            instance[property] = Color3.fromHSV(0.666, 1, 1)
+            color = Color3.fromHSV((hue - 180) / 360, 1, 1)
         end
+        instance[property] = color
     end)
 end
 
-local function applyRedBlueToText(container)
+local function applyRedBlueEffect(container)
     for _, child in pairs(container:GetDescendants()) do
-        if child:IsA("TextLabel") or child:IsA("TextButton") then
+        if child:IsA("TextLabel") or child:IsA("TextButton") or child:IsA("TextBox") then
             startRedBlueEffect(child, "TextColor3")
+        elseif child:IsA("Frame") and child:FindFirstChildOfClass("Frame") then
+            startRedBlueEffect(child, "BackgroundColor3")
         end
     end
 end
 
 if MainFrame then
-    applyRedBlueToText(MainFrame)
+    applyRedBlueEffect(MainFrame)
+end
+
+
+if MainFrame then
+    applyRedBlueToAllText(MainFrame)
 end
 
 
