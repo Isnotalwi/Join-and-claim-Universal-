@@ -1,0 +1,35 @@
+local function firetouchinterests()
+spawn(function()
+    local function fireTouchInterest(targetPart)
+        pcall(function()
+            targetPart = targetPart:FindFirstAncestorWhichIsA("Part")
+            if targetPart then
+                if firetouchinterest then
+                    spawn(function()
+                        local playerRoot = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        if playerRoot then
+                            firetouchinterest(targetPart, playerRoot, 1)
+                            wait(0.1)
+                            firetouchinterest(targetPart, playerRoot, 0)
+                        end
+                    end)
+                end
+                local playerRoot = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if playerRoot then
+                    targetPart.CFrame = playerRoot.CFrame
+                end
+            end
+        end)
+    end
+
+    spawn(function()
+        for _, object in ipairs(workspace:GetDescendants()) do
+            pcall(function()
+                if object:IsA("TouchTransmitter") then
+                    fireTouchInterest(object)
+                end
+            end)
+        end
+    end)
+end)
+end
