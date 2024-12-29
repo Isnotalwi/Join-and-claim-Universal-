@@ -1009,6 +1009,31 @@ end)
                 end
             end)
 
+function applyRGBTextEffect(label)
+    local RS = game:GetService("RunService")
+    local hue = 0
+    RS.RenderStepped:Connect(function()
+        hue = (hue + 1) % 360
+        local color = Color3.fromHSV(hue / 360, 1, 1)
+        label.TextColor3 = color
+    end)
+end
+
+
+function Create(instance, properties, children)
+    local obj = Instance.new(instance)
+    for i, v in pairs(properties or {}) do
+        obj[i] = v
+    end
+    for _, child in pairs(children or {}) do
+        child.Parent = obj
+    end
+    if instance == "TextLabel" or instance == "TextButton" or instance == "TextBox" then
+        applyRGBTextEffect(obj)
+    end
+    return obj
+end
+			
             page.CanvasSize = UDim2.new(0, 0, 0, sizeTab(page) + 10)
             return components;
         end
